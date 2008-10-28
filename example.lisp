@@ -1,4 +1,7 @@
-;;;; A fairly literal translation of FTGL's c-demo.c.
+;;;; cl-ftgl -- FTGL binding for CL.  See README for licensing information.
+;;;;
+;;;; A fairly literal translation of FTGL's c-demo.c, which was
+;;;; copyright 2008 Sam Hocevar <sam@zoy.org>.
 
 (asdf:oos 'asdf:load-op '#:cl-opengl)
 (asdf:oos 'asdf:load-op '#:cl-glu)
@@ -7,9 +10,12 @@
 (asdf:oos 'asdf:load-op '#:anaphora)
 
 (defpackage #:cl-ftgl-example
-  (:use :cl :cl-ftgl :anaphora))
+  (:use #:cl #:cl-ftgl #:anaphora))
 
 (in-package :cl-ftgl-example)
+
+(defparameter *width* 640)
+(defparameter *height* 480)
 
 (defclass demo-window (glut:window)
   ((file :reader file-of :initarg :file)
@@ -17,16 +23,18 @@
    (frames :accessor frames-of :initform 0)
    (last-fps :accessor last-fps-of :initform 0)
    (font-index :accessor font-index-of :initarg :font-index))
-  (:default-initargs :width 640 :height 480 :title "simple FTGL CL demo" :mode '(:depth :double :rgba)
+  (:default-initargs :width *width* :height *height*
+                     :title "simple FTGL CL demo"
+                     :mode '(:depth :double :rgba)
                      :font-index 0))
 
 (defmethod glut:display-window :before ((it demo-window))
   (gl:matrix-mode :projection)
   (%gl:load-identity)
-  (glu:perspective 90 (/ 640 480) 1 1000)
+  (glu:perspective 90 (/ *width* *height*) 1 1000)
   (%gl:matrix-mode :modelview)
   (%gl:load-identity)
-  (glu:look-at 0 0 (/ 640 2) 0 0 0 0 1 0)
+  (glu:look-at 0 0 (/ *width* 2) 0 0 0 0 1 0)
 
   (setf (fonts-of it)
         (list (aprog1 (ftgl:create-extrude-font (file-of it))
@@ -39,7 +47,6 @@
                 (ftgl:set-font-char-map it :unicode)))))
   ;; (ftgl:create-custom-font file nil (cffi:callback make-halo-glyph))
 
-
 (defmethod glut:idle ((it demo-window)) (glut:post-redisplay))
 
 (defmethod glut:display ((it demo-window))
@@ -48,7 +55,7 @@
          (t1 (sin (/ n 80)))
          (t2 (sin (1+ (/ n 50))))
          (t3 (sin (+ 2 (/ n 30))))
-         (ambient (coerce (list (/ (+ t1 2) 3) (/ (+ t2 2) 3) (/ (+ t3 2) 3) 0.3) 'vector))
+         (ambient (list (/ (+ t1 2) 3) (/ (+ t2 2) 3) (/ (+ t3 2) 3) 0.3))
          (diffuse #(1 0.9 0.9 1))
          (specular #(1 0.7 0.7 1))
          (position #(100 100 0 1))
@@ -94,4 +101,4 @@
   (glut:init)
   (glut:display-window (make-instance 'demo-window :file file)))
 
-(main "example.ttf")
+(main "example.otf")

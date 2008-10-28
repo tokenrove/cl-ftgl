@@ -1,5 +1,10 @@
 
-This is a quick CL binding for FTGL, nothing special.  The example is
-a quick conversion of the original c-demo, and the included TTF is
-Jagged Dreams by Graham Meade, which I probably don't have permission
-to distribute, so it will probably disappear.
+This is a quick CL binding for FTGL, nothing special.  As I use it in
+my own projects, I may start to develop some lispier enhancements to
+the interface.  The example is a quick conversion of the original
+c-demo, and requires cl-opengl to run.  The included font is Aurulent
+Sans Regular by Stephen Hartke which is released under the Open Font
+License.
+
+This package has been placed in the public domain by its author,
+Julian Squires <julian@cipht.net>.

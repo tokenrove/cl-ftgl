@@ -1,3 +1,4 @@
+;;;; cl-ftgl -- FTGL binding for CL.  See README for licensing information.
 
 (in-package :cl-ftgl)
 

@@ -1,4 +1,5 @@
-;; -*- Lisp -*-
+;;;; -*- Lisp -*-
+;;;; cl-ftgl -- FTGL binding for CL.  See README for licensing information.
 
 (defpackage #:cl-ftgl-system (:use #:cl #:asdf))
 (in-package #:cl-ftgl-system)
