@@ -1,0 +1,5 @@
+
+This is a quick CL binding for FTGL, nothing special.  The example is
+a quick conversion of the original c-demo, and the included TTF is
+Jagged Dreams by Graham Meade, which I probably don't have permission
+to distribute, so it will probably disappear.
