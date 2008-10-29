@@ -1,7 +1,7 @@
 
 (defpackage #:cl-ftgl
   (:nicknames #:ftgl)
-  (:use #:cl)
+  (:use #:cl #:cffi)
   (:export
    ;; our own stuff
    #:with-font
