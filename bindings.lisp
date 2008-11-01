@@ -25,10 +25,18 @@
   (:right 2)
   (:justify 3))
 
+(define-foreign-type pathname-string-type ()
+  ()
+  (:actual-type :string)
+  (:simple-parser pathname-string))
+(defmethod expand-to-foreign-dyn (value var body (type pathname-string-type))
+  `(with-foreign-string (,var (if (pathnamep ,value) (namestring ,value) ,value))
+     ,@body))
+
 (defcfun ("ftglCreateCustomFont" create-custom-font) font "Create a custom FTGL font object."
-              (font-file-path :string) (data :pointer) (make-glyph-callback :pointer))
+              (font-file-path pathname-string) (data :pointer) (make-glyph-callback :pointer))
 (defcfun ("ftglDestroyFont" destroy-font) :void "Destroy an FTGL font object." (font font))
-(defcfun ("ftglAttachFile" attach-file) :int "Attach auxilliary file to font e.g." (font font) (path :string))
+(defcfun ("ftglAttachFile" attach-file) :int "Attach auxilliary file to font e.g." (font font) (path pathname-string))
 ;; XXX size is actually size_t
 (defcfun ("ftglAttachData" attach-data) :int "Attach auxilliary data to font, e.g." (font font) (data (:pointer :uint8)) (size :int))
 (defcfun ("ftglSetFontCharMap" set-font-char-map) :int "Set the character map for the face." (font font) (encoding encoding))
@@ -47,12 +55,12 @@
 (defcfun ("ftglRenderFont" render-font) :void "Render a string of characters." (font font) (string :string) (mode render-mode))
 (defcfun ("ftglGetFontError" get-font-error) :int "Query a font for errors." (font font))
 
-(defcfun ("ftglCreatePixmapFont" create-pixmap-font) font "Create a specialised FTGLfont object for handling pixmap (grey scale) fonts." (file :string))
-(defcfun ("ftglCreatePolygonFont" create-polygon-font) font "Create a specialised FTGLfont object for handling tesselated polygon mesh fonts." (file :string))
-(defcfun ("ftglCreateOutlineFont" create-outline-font) font "Create a specialised FTGLfont object for handling vector outline fonts." (file :string))
-(defcfun ("ftglCreateExtrudeFont" create-extrude-font) font "Create a specialised FTGLfont object for handling extruded poygon fonts." (file :string))
-(defcfun ("ftglCreateTextureFont" create-texture-font) font "Create a specialised FTGLfont object for handling texture-mapped fonts." (file :string))
-(defcfun ("ftglCreateBufferFont" create-buffer-font) font "Create a specialised FTGLfont object for handling buffered fonts." (file :string))
+(defcfun ("ftglCreatePixmapFont" create-pixmap-font) font "Create a specialised FTGLfont object for handling pixmap (grey scale) fonts." (file pathname-string))
+(defcfun ("ftglCreatePolygonFont" create-polygon-font) font "Create a specialised FTGLfont object for handling tesselated polygon mesh fonts." (file pathname-string))
+(defcfun ("ftglCreateOutlineFont" create-outline-font) font "Create a specialised FTGLfont object for handling vector outline fonts." (file pathname-string))
+(defcfun ("ftglCreateExtrudeFont" create-extrude-font) font "Create a specialised FTGLfont object for handling extruded poygon fonts." (file pathname-string))
+(defcfun ("ftglCreateTextureFont" create-texture-font) font "Create a specialised FTGLfont object for handling texture-mapped fonts." (file pathname-string))
+(defcfun ("ftglCreateBufferFont" create-buffer-font) font "Create a specialised FTGLfont object for handling buffered fonts." (file pathname-string))
 
 (defcfun ("ftglCreateCustomGlyph" create-custom-glyph) glyph "Create a custom FTGL glyph object." (base glyph) (data :pointer) (render-callback :pointer) (destroy-callback :pointer))
 (defcfun ("ftglDestroyGlyph" destroy-glyph) :void "Destroy an FTGL glyph object." (glyph glyph))
