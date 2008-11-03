@@ -29,9 +29,10 @@
   ()
   (:actual-type :string)
   (:simple-parser pathname-string))
-(defmethod expand-to-foreign-dyn (value var body (type pathname-string-type))
-  `(with-foreign-string (,var (if (pathnamep ,value) (namestring ,value) ,value))
-     ,@body))
+(eval-when (:compile-toplevel :load-toplevel)
+  (defmethod expand-to-foreign-dyn (value var body (type pathname-string-type))
+    `(with-foreign-string (,var (if (pathnamep ,value) (namestring ,value) ,value))
+       ,@body)))
 
 (defcfun ("ftglCreateCustomFont" create-custom-font) font "Create a custom FTGL font object."
               (font-file-path pathname-string) (data :pointer) (make-glyph-callback :pointer))
