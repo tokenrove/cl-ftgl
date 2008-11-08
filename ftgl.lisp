@@ -12,3 +12,8 @@ some of the font parameters per keywords."
             ,(when char-map-p `(ftgl:set-font-char-map ,var ,char-map))
             ,@body)
        (destroy-font ,var))))
+
+(defun get-font-bbox (font string)
+  (with-foreign-object (bbox :float 6)
+    (%get-font-bbox font string -1 bbox)
+    (loop for i below 6 collect (mem-aref bbox :float i))))

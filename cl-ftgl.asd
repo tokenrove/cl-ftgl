@@ -5,7 +5,7 @@
 (in-package #:cl-ftgl-system)
 
 (defsystem cl-ftgl
-    :depends-on (:cffi :cl-opengl)
+    :depends-on (:cffi :anaphora)
     :components
     ((:file "package")
      (:file "bindings" :depends-on ("package"))
